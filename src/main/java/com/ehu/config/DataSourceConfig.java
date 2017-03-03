@@ -22,13 +22,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
-import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
-import org.springframework.orm.jpa.persistenceunit.SmartPersistenceUnitInfo;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.persistence.spi.PersistenceUnitInfo;
 import javax.sql.DataSource;
 import java.lang.reflect.Method;
 import java.util.HashMap;
