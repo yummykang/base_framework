@@ -1,11 +1,18 @@
 package com.ehu.handler;
 
 import com.ehu.bean.ErrorResponse;
+import com.ehu.bean.base.Response;
+import com.ehu.constants.SystemConstants;
 import com.ehu.exception.BusinessErrorException;
 import com.ehu.exception.TokenValidationException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,6 +20,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 
 /**
@@ -21,7 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author demon
  */
 @ControllerAdvice
-public class ApiExceptionHandler {
+public class ApiExceptionHandler implements ResponseBodyAdvice<Object> {
 
     /**
      * Token验证异常处理
@@ -101,11 +109,38 @@ public class ApiExceptionHandler {
      * @param ex
      * @return
      */
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ErrorResponse handleIllegalArgumentsException(IllegalArgumentException ex) {
+        ex.printStackTrace();
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "系统异常");
+    }
+
+    /**
+     * 运行时异常
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorResponse handleUnexpectedServerError(RuntimeException ex) {
         ex.printStackTrace();
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "系统异常");
+    }
+
+    @Override
+    public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
+        return true;
+    }
+
+    @Override
+    public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+        if (serverHttpRequest.getURI().getPath().contains(SystemConstants.URL_HEADER)) {
+            return new Response(o);
+        }
+        return o;
     }
 }

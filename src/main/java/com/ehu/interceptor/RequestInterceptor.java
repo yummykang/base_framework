@@ -30,7 +30,6 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
 			return false;
 		}
 		
-		
 		return true;
 	}
 

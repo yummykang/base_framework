@@ -21,8 +21,8 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         ApiInfo apiInfo = new ApiInfo(
-                "procurement-api Restful API",
-                "procurement-api Restful API",
+                "demon Restful API",
+                "demon Restful API",
                 "1.0",
                 "http://ehoo100.com/",
                 "Demon",
@@ -33,7 +33,7 @@ public class SwaggerConfig {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ehu.controller"))
-                .paths(PathSelectors.ant("/*"))
+                .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo);
 

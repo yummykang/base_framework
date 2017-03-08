@@ -1,9 +1,9 @@
 package com.ehu.controller;
 
+import com.ehu.constants.SystemConstants;
 import com.ehu.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(tags = "用户相关接口")
+@RequestMapping(SystemConstants.URL_HEADER + "/users")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     @ApiOperation(value="用户列表",notes="用户列表",consumes="application/json",produces="application/json")
     public Object getUserList() {
         return userService.getUserList();
