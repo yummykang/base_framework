@@ -4,9 +4,12 @@ import com.ehu.entity.primary.MerchantUser;
 import com.ehu.entity.another.DemonUser;
 import com.ehu.repository.primary.MerchantUserDao;
 import com.ehu.repository.another.DemonUserDao;
+import com.ehu.utils.jpa.JpaHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,7 +34,6 @@ public class UserService {
      */
     @Cacheable(value = "userList", cacheManager = "redisCache", keyGenerator = "redisKeyGen")
     public Object getUserList() {
-
         System.out.println("无缓存的时候调用这里");
         return userDao.findAll();
     }

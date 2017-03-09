@@ -1,8 +1,11 @@
 package com.ehu.utils.jpa;
 
 import com.ehu.utils.BeanUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -14,8 +17,8 @@ import java.util.regex.Pattern;
  * @author demon
  * @Date 2016/6/22 9:52
  */
+@Service
 public class JpaUtils {
-
     /**
      * 替换sql中的?
      *
