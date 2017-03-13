@@ -1,7 +1,5 @@
 package com.ehu.handler;
 
-import com.ehu.bean.ErrorResponse;
-import com.ehu.bean.base.Response;
 import com.ehu.constants.SystemConstants;
 import com.ehu.exception.BusinessErrorException;
 import com.ehu.exception.TokenValidationException;
@@ -41,8 +39,8 @@ public class ApiExceptionHandler implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(TokenValidationException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     @ResponseBody
-    public ErrorResponse handleTokenValidationException(TokenValidationException ex) {
-        return new ErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage());
+    public ResponseEntity handleTokenValidationException(TokenValidationException ex) {
+        return new ResponseEntity(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
     /**
@@ -54,8 +52,8 @@ public class ApiExceptionHandler implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(BusinessErrorException.class)
     @ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
     @ResponseBody
-    public ErrorResponse handleBusinessErrorException(BusinessErrorException ex) {
-        return new ErrorResponse(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
+    public ResponseEntity handleBusinessErrorException(BusinessErrorException ex) {
+        return new ResponseEntity(ex.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     /**
@@ -67,8 +65,8 @@ public class ApiExceptionHandler implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(TypeMismatchException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorResponse handleTypeMismatchException(TypeMismatchException ex) {
-        return new ErrorResponse(HttpStatus.BAD_REQUEST, "Type did not match.");
+    public ResponseEntity handleTypeMismatchException(TypeMismatchException ex) {
+        return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -80,14 +78,14 @@ public class ApiExceptionHandler implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorResponse handleMethodArgumentNotValidException(
+    public ResponseEntity handleMethodArgumentNotValidException(
             MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
         String errorMesssage = "";
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             errorMesssage += fieldError.getDefaultMessage() + "<br>";
         }
-        return new ErrorResponse(HttpStatus.BAD_REQUEST, errorMesssage);
+        return new ResponseEntity(errorMesssage, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -99,9 +97,9 @@ public class ApiExceptionHandler implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorResponse handleHttpMessageNotReadableException(
+    public ResponseEntity handleHttpMessageNotReadableException(
             HttpMessageNotReadableException ex) {
-        return new ErrorResponse(HttpStatus.BAD_REQUEST, "请输入正确的格式");
+        return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -113,9 +111,9 @@ public class ApiExceptionHandler implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public ErrorResponse handleIllegalArgumentsException(IllegalArgumentException ex) {
+    public ResponseEntity handleIllegalArgumentsException(IllegalArgumentException ex) {
         ex.printStackTrace();
-        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "系统异常");
+        return new ResponseEntity(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -127,9 +125,9 @@ public class ApiExceptionHandler implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public ErrorResponse handleUnexpectedServerError(RuntimeException ex) {
+    public ResponseEntity handleUnexpectedServerError(RuntimeException ex) {
         ex.printStackTrace();
-        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "系统异常");
+        return new ResponseEntity(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
