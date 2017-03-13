@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper xmlns="http://www.yummykang.top"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.yummykang.top /sql.xsd">
+    <select id="querySomething" resultType="com.ehu.bean.TestModel">
+        select * from demon_user where name = ?
+    </select>
+</mapper>
