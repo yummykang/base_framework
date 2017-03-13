@@ -21,3 +21,5 @@ spring-boot版本base framework
                           and(helper.gte("insDate", DateUtils.getStart(search.getStartTime()))).
                           and(helper.lte("insDate", DateUtils.getEnd(search.getEndTime()))).
                           and(helper.like("teamName", search.getTeamName()));
+                          
+6.加入类似mybatis通用数据库查询，详情见model
